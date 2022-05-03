@@ -1,5 +1,5 @@
-export interface IListAllProducts {
-  id: number,
+export interface IProduct {
+  id?: number,
   name: string,
   quantity: number,
   cost_price: number,
