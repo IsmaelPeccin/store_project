@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import ProductController from '../controller/ProductController';
+import CreateValidate from '../middlewares/productValidate';
 
 const productController = new ProductController();
 
@@ -12,4 +13,19 @@ productRouter.get(
   },
 );
 
-export default productRouter; 
+productRouter.get(
+  '/:id',
+  async (req: Request, res: Response) => {
+    await productController.findById(req, res);
+  }
+);
+
+productRouter.post(
+  '/',
+  CreateValidate.validate,
+  async (req: Request, res: Response) => {
+    await productController.create(req, res);
+  }
+);
+
+export default productRouter;
