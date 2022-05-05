@@ -55,4 +55,12 @@ export default class ProductModel {
       [name, quantity, sale_price, cost_price, id]
     );
   }
+
+  remove = async (id: number) => {
+    const query = 'DELETE FROM Store.products WHERE id = ?';
+    await this.connection.execute(
+    query,
+      [id],
+    );
+  }
 }
