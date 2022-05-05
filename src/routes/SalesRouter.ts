@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import SalesController from '../controller/SalesController';
+import SalesValidate from '../middlewares/salesValidate';
 
 const saleController = new SalesController();
 
@@ -21,6 +22,7 @@ salesRouter.get(
 
 salesRouter.post(
   '/',
+  SalesValidate.validate,
   async (req: Request, res: Response) => {
     await saleController.create(req, res);
   }

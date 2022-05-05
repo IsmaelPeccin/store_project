@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const salesJoi = joi.object({
+module.exports =  joi.object({
   productId: joi.required().messages({
     'any.required': '400|"productId" is required',
   }),
@@ -11,5 +11,3 @@ const salesJoi = joi.object({
     'number.positive': '422|"quantity" must be greater than or equal to 1',
   }),
 });
-
-module.exports = joi.array().items(salesJoi);
