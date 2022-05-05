@@ -36,6 +36,14 @@ export default class ProductService {
     }
 
     this.productModel.update(id, product);
- 
+  }
+
+  remove = async (id: number) => {
+    const bookFound = await this.productModel.findById(id);
+    if (!bookFound) {
+      return false;
+    }
+    this.productModel.remove(id);
+
   }
 }
