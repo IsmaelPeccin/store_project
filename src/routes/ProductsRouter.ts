@@ -28,4 +28,11 @@ productRouter.post(
   }
 );
 
+productRouter.put(
+  '/:id',
+  async (req: Request, res: Response) => {
+    await productController.update(req, res);
+  }
+);
+
 export default productRouter;
