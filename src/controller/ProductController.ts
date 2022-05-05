@@ -33,4 +33,19 @@ export default class ProductController {
     }
     res.status(201).json(productCreated);
   };
-} 
+
+  update = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const product = req.body;
+    try {
+      
+    } catch (error) {
+      
+    }
+    if ( !await this.productService.update(id, product)) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(204).end();
+    }
+  }
