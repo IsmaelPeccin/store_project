@@ -54,9 +54,9 @@ CREATE TABLE purchases_products (
 SET SQL_SAFE_UPDATES = 0;
 
 INSERT INTO Store.products (name, quantity, sale_price, cost_price) VALUES
-    ("Cadeira", 5, 25.00, 35.00),
-    ("Chocolate em pó", 20, 7.00, 12.00),
-    ("Refrigerante", 30, 3.50, 4.80);
+    ("Cadeira", 5, 35.00, 25.00),
+    ("Chocolate em pó", 20, 12.00, 7.00),
+    ("Refrigerante", 30, 4.80, 3.50);
 
 INSERT INTO Store.sales (date) VALUES
     (NOW()),
