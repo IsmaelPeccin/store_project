@@ -28,4 +28,14 @@ export default class ProductService {
     const productCreated = await this.productModel.create(product);
     return productCreated;
   }
+
+  update = async (id: number, product: IProduct) => {
+    const productFound = await this.productModel.findById(id);
+    if (!productFound) {
+     return false
+    }
+
+    this.productModel.update(id, product);
+ 
+  }
 }
