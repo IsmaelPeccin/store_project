@@ -35,4 +35,11 @@ productRouter.put(
   }
 );
 
+productRouter.delete(
+  '/:id',
+  async (req: Request, res: Response) => {
+    await productController.remove(req, res);
+  }
+);
+
 export default productRouter;
