@@ -1,24 +1,32 @@
 import { Response, Request } from 'express';
-import SalesModel from '../model/SalesModel';
+import SalesService from '../service/SalesService';
 
 export default class SalesController {
-  private salesModel: SalesModel;
+  private salesService: SalesService;
 
   constructor() {
-    this.salesModel = new SalesModel();
+    this.salesService = new SalesService();
   }
 
-  list = async (req: Request, res: Response) => {
-    const allSales = await this.salesModel.list();
+  list = async (_req: Request, res: Response) => {
+    const allSales = await this.salesService.list();
     res.status(200).json(allSales);
   }
 
-  findById = async (req: Request, res: Response) => {
+  saleById = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const sale = await this.salesModel.findById(id);
+    const sale = await this.salesService.saleById(id);
     if (!sale) {
       res.status(404).json({ message: 'Sale not found' });
     }
     res.status(200).json(sale);
+  }
+
+  create = async (req: Request, res: Response) => {
+    const sale = req.body;
+
+    const createdSale= await this.salesService.create(sale);
+
+    res.status(201).json(createdSale);
   }
 }

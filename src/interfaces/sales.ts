@@ -1,6 +1,8 @@
 export interface ISale {
-  sale_id?: number,
-  product_id: number,
+  id?: number,
+  date?: string,
+  productId: number,
   quantity: number,
   total: number,
 }
+

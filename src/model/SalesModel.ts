@@ -1,4 +1,4 @@
-import { Pool } from 'mysql2/promise';
+import { Pool, ResultSetHeader } from 'mysql2/promise';
 import { ISale } from '../interfaces';
 import connection from './connection';
 
@@ -12,8 +12,8 @@ export default class SalesModel {
   list = async (): Promise<ISale[]> => {
     const query = `SELECT 
     s.id AS saleId,
-    s.date,
     sp.product_id AS productId,
+    s.date,
     sp.quantity,
     sp.total
     FROM
@@ -30,7 +30,7 @@ export default class SalesModel {
   };
 
 
-  findById = async (id:number):Promise<ISale> => {
+  saleById = async (id:number):Promise<ISale> => {
     const query = `SELECT 
     s.id AS saleId,
     s.date,
@@ -46,44 +46,27 @@ export default class SalesModel {
     ORDER BY s.id, sp.product_id;`;
     const result = await connection.execute(query, [id]);
     const [rows] = result;
-    const [product] = rows as ISale[];
-    return product;
+    const [sale] = rows as ISale[];
+    return sale;
+  };
+
+  insertSalesDate = async () => {
+    const query = `INSERT INTO Store.sales (date)
+      VALUES (NOW());`;
+  
+    const result = await connection.execute<ResultSetHeader>(query);;
+    const [dataInserted] = result;
+    const { insertId } = dataInserted;
+    return { insertId };
+  };
+
+  create = async (saleData: ISale) => {
+    const query = `INSERT INTO Store.sales_products (sale_id, product_id, quantity, total)
+    VALUES (?, ?, ?, ?);`;
+    const { id, productId, quantity, total } = saleData;
+  
+   const [createResult] = await connection.execute<ResultSetHeader>(query, [ id, productId, quantity, total]);
+   return createResult;
+    
   };
 }
-//   create = async (product: ISale): Promise<ISale> => {
-//     const { name, quantity, cost_price, sale_price  } = product;
-//     const query = 'INSERT INTO Store.products (name, quantity, cost_price, sale_price) VALUES (?, ?, ?, ?)';
-//     const result = await this.connection.execute<ResultSetHeader>(
-//       query,
-//       [name, quantity, cost_price, sale_price],
-//     );
-//     const [dataInserted] = result;
-//     const { insertId } = dataInserted;
-//     return { sale_id: insertId, ...product };
-//   }
-
-//   searchByName = async (name: string): Promise<IProduct> => {
-//     const query = 'SELECT * FROM Store.products WHERE name = ?';
-//     const result = await this.connection.execute(query, [name]);
-//     const [rows] = result;
-//     const [product] = rows as IProduct[];
-//     return product;
-//   }
-
-//   update = async (id: number, product: IProduct) => {
-//     const { name, quantity, sale_price, cost_price,  } = product;
-//     const query = 'UPDATE Store.products SET name = ?, quantity = ?, sale_price = ?, cost_price = ? WHERE id = ?';
-//     await this.connection.execute(
-//       query,
-//       [name, quantity, sale_price, cost_price, id]
-//     );
-//   }
-
-//   remove = async (id: number) => {
-//     const query = 'DELETE FROM Store.products WHERE id = ?';
-//     await this.connection.execute(
-//     query,
-//       [id],
-//     );
-//   }
-// }

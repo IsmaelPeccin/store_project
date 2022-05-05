@@ -15,7 +15,14 @@ salesRouter.get(
 salesRouter.get(
   '/:id',
   async (req: Request, res: Response) => {
-    await saleController.findById(req, res);
+    await saleController.saleById(req, res);
+  }
+);
+
+salesRouter.post(
+  '/',
+  async (req: Request, res: Response) => {
+    await saleController.create(req, res);
   }
 );
 
