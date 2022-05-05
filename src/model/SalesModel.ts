@@ -69,4 +69,10 @@ export default class SalesModel {
    return createResult;
     
   };
+
+  deleteSale = async (id: number) => {
+    const query = 'DELETE FROM Store.sales WHERE id = ?';
+    const [result] = await connection.execute(query, [id]);
+    return result;
+  };
 }

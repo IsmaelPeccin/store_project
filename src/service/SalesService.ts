@@ -29,10 +29,20 @@ export default class ProductService {
 
 
     return {
-      saleId: insertId,
+      Id: insertId,
       productId: sales.productId,
       quantity: sales.quantity,
       total: totalPrice,
     }
+  }
+
+  delete = async (id: number) => {
+    const saleIdExists = await this.salesModel.saleById(id);
+
+  if (!saleIdExists) return false;
+
+  await this.salesModel.deleteSale(id);
+
+  return true;
   }
 }

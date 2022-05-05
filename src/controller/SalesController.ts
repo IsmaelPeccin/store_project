@@ -29,4 +29,13 @@ export default class SalesController {
 
     res.status(201).json(createdSale);
   }
+
+  delete = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const deleted = await this.salesService.delete(id);
+    if (!deleted) {
+      res.status(404).json({ message: 'Sale not found' });
+    }
+    res.status(204).end();
+  }
 }

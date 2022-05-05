@@ -28,4 +28,11 @@ salesRouter.post(
   }
 );
 
+salesRouter.delete(
+  '/:id',
+  async (req: Request, res: Response) => {
+    await saleController.delete(req, res);
+  }
+);
+
 export default salesRouter;
