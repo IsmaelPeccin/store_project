@@ -46,4 +46,13 @@ export default class ProductModel {
     const [product] = rows as IProduct[];
     return product;
   }
+
+  update = async (id: number, product: IProduct) => {
+    const { name, quantity, sale_price, cost_price,  } = product;
+    const query = 'UPDATE Store.products SET name = ?, quantity = ?, sale_price = ?, cost_price = ? WHERE id = ?';
+    await this.connection.execute(
+      query,
+      [name, quantity, sale_price, cost_price, id]
+    );
+  }
 }
