@@ -46,6 +46,20 @@ export default class ProductController {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(204).end();
+    res.status(204).json({ message: 'Product updated' });
     }
-  }
+
+    remove = async (req: Request, res: Response) => {
+      const id = Number(req.params.id);
+
+      const findProduct = await this.productService.findById(id);
+      if (!findProduct) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+
+     await this.productService.remove(id);
+
+      res.status(200).json({ message: 'Product removed' });
+
+    }
+}
