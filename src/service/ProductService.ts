@@ -30,12 +30,8 @@ export default class ProductService {
   }
 
   update = async (id: number, product: IProduct) => {
-    const productFound = await this.productModel.findById(id);
-    if (!productFound) {
-     return false
-    }
-
-    this.productModel.update(id, product);
+    const productUpdated = await this.productModel.update(id, product);
+    return productUpdated;
   }
 
   remove = async (id: number) => {

@@ -37,7 +37,7 @@ export default class ProductModel {
     const [dataInserted] = result;
     const { insertId } = dataInserted;
     return { id: insertId, ...product };
-  }
+  };
 
   searchByName = async (name: string): Promise<IProduct> => {
     const query = 'SELECT * FROM Store.products WHERE name = ?';
@@ -45,16 +45,22 @@ export default class ProductModel {
     const [rows] = result;
     const [product] = rows as IProduct[];
     return product;
-  }
+  };
 
   update = async (id: number, product: IProduct) => {
-    const { name, quantity, sale_price, cost_price,  } = product;
-    const query = 'UPDATE Store.products SET name = ?, quantity = ?, sale_price = ?, cost_price = ? WHERE id = ?';
+    const { name, quantity, sale_price, cost_price } = product;
+    const query = `UPDATE
+     Store.products 
+     SET name = ?,
+     quantity = ?,
+     sale_price = ?,
+     cost_price = ? 
+     WHERE id = ?`;
     await this.connection.execute(
       query,
       [name, quantity, sale_price, cost_price, id]
     );
-  }
+  };
 
   remove = async (id: number) => {
     const query = 'DELETE FROM Store.products WHERE id = ?';
@@ -62,5 +68,5 @@ export default class ProductModel {
     query,
       [id],
     );
-  }
+  };
 }

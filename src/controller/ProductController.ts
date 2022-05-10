@@ -37,17 +37,16 @@ export default class ProductController {
   update = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const product = req.body;
-    try {
-      
-    } catch (error) {
-      
-    }
-    if ( !await this.productService.update(id, product)) {
+
+    const foundProduct = await this.productService.findById(id);
+    if (!foundProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.status(204).json({ message: 'Product updated' });
-    }
+    const productUpdated = await this.productService.update(id, product);
+
+    res.status(200).json(productUpdated);
+  };
 
     remove = async (req: Request, res: Response) => {
       const id = Number(req.params.id);
