@@ -26,8 +26,9 @@ export default class ProductService {
     const { insertId } = await this.salesModel.insertSalesDate();
     const { productId, quantity } = salesBody;
     const { sale_price } = await this.productModel.findById(productId);
+    const total = sale_price * quantity;
   
-    await this.salesModel.create(insertId, productId, quantity);
+    await this.salesModel.create(insertId, productId, quantity, total);
   
     return {
       id: insertId,
