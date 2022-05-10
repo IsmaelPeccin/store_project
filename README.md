@@ -31,9 +31,9 @@ Para clonar o projeto, basta seguir os seguintes passos:
 1. Clone o repositório e acesse a pasta 
   - `store_project`
   
-2. Intale as dependências
+2. Instale as dependências
   - `npm install` 
-  - 
+  
 Há um arquivo `.env.example` na raíz do projeto, onde estão especificadas as varíaveis de ambiente utilizadas no projeto, é necessário configura-las para que a conexão com o banco seja realizada com sucesso.
 
 Na raiz do projeto encontra-se o arquivo `Store.sql` é possível importá-lo localmente para testar o comportamento dos endpoints da aplicação, através de apps como Insomnia e Postman.
