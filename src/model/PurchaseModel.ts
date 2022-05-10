@@ -1,5 +1,5 @@
 import { Pool, ResultSetHeader } from 'mysql2/promise';
-import { ISale } from '../interfaces';
+import { IPurchase } from '../interfaces';
 import connection from './connection';
 
 export default class PurchaseModel {
@@ -9,7 +9,7 @@ export default class PurchaseModel {
     this.connection = connection;
   }
 
-  list = async (): Promise<ISale[]> => {
+  list = async (): Promise<IPurchase[]> => {
     const query = `SELECT 
     p.id AS purchaseId,
     pp.product_id AS productId,
@@ -26,11 +26,11 @@ export default class PurchaseModel {
 
     const [rows] = result;
 
-    return rows as ISale[];
+    return rows as IPurchase[];
   };
 
 
-  purchaseById = async (id:number):Promise<ISale> => {
+  purchaseById = async (id:number):Promise<IPurchase> => {
     const query = `SELECT 
     p.id AS purchaseId,
     pp.product_id AS productId,
@@ -47,12 +47,12 @@ export default class PurchaseModel {
 
     const result = await connection.execute(query, [id]);
     const [rows] = result;
-    const [sale] = rows as ISale[];
+    const [sale] = rows as IPurchase[];
     return sale;
   };
 
   insertPurchasesDate = async () => {
-    const query = `INSERT INTO Store.sales (date)
+    const query = `INSERT INTO Store.purchases (date)
       VALUES (NOW());`;
   
     const result = await connection.execute<ResultSetHeader>(query);;
@@ -61,18 +61,17 @@ export default class PurchaseModel {
     return { insertId };
   };
 
-  create = async (purchaseData: ISale) => {
-    const query = `INSERT INTO Store.sales_products (purchase_id, product_id, quantity, total)
+  create = async (id: number, productId: number, quantity:number, total:number) => {
+    const query = `INSERT INTO Store.purchases_products (purchase_id, product_id, quantity, total)
     VALUES (?, ?, ?, ?);`;
-    const { id, productId, quantity, total } = purchaseData;
-  
+   
    const [createResult] = await connection.execute<ResultSetHeader>(query, [ id, productId, quantity, total]);
    return createResult;
     
   };
 
   deleteSale = async (id: number) => {
-    const query = 'DELETE FROM Store.sales WHERE id = ?';
+    const query = 'DELETE FROM Store.purchases WHERE id = ?';
     const [result] = await connection.execute(query, [id]);
     return result;
   };

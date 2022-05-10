@@ -60,10 +60,9 @@ export default class SalesModel {
     return { insertId };
   };
 
-  create = async (saleData: ISale) => {
+  create = async (id:number, productId: number, quantity: number, total: number) => {
     const query = `INSERT INTO Store.sales_products (sale_id, product_id, quantity, total)
     VALUES (?, ?, ?, ?);`;
-    const { id, productId, quantity, total } = saleData;
   
    const [createResult] = await connection.execute<ResultSetHeader>(query, [ id, productId, quantity, total]);
    return createResult;
