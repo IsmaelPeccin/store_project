@@ -1,4 +1,4 @@
-import { ISale } from '../interfaces';
+import { IPurchase } from '../interfaces';
 import ProductModel from '../model/ProductModel';
 import PurchaseModel from '../model/PurchaseModel';
 
@@ -12,29 +12,34 @@ export default class PurchaseService {
     this.productModel = new ProductModel();
   }
 
-  list = async (): Promise<ISale[]> => {
+  list = async (): Promise<IPurchase[]> => {
     const allPurchases = await this.purchaseModel.list();
     return allPurchases;
   };
 
-  purchaseById = async (id: number): Promise<ISale> => {
+  purchaseById = async (id: number): Promise<IPurchase> => {
     const purchase = await this.purchaseModel.purchaseById(id);
     return purchase;
   }
 
-  create = async (purchases: ISale) => {
+  create = async (purchaseBody: IPurchase) => {
     const { insertId } = await this.purchaseModel.insertPurchasesDate();
-    const product = await this.productModel.findById(purchases.productId);
-    const totalPrice = ((purchases.quantity) * (product.cost_price)).toFixed(2);
-
-
+    const { productId, quantity } = purchaseBody;
+    const { cost_price } = await this.productModel.findById(productId);
+    const total = cost_price * quantity;
+  
+    await this.purchaseModel.create(insertId, productId, quantity, total);
+  
     return {
-      Id: insertId,
-      productId: purchases.productId,
-      quantity: purchases.quantity,
-      total: totalPrice,
-    }
-  }
+      purchaseId: insertId,
+      itemPurchased: {
+        productId,
+        quantity,
+        price: cost_price,
+        total: (cost_price * quantity).toFixed(2),
+      },
+    };
+  };
 
   delete = async (id: number) => {
     const purchaseIdExists = await this.purchaseModel.purchaseById(id);
