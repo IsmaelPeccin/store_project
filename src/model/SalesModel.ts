@@ -60,12 +60,11 @@ export default class SalesModel {
     return { insertId };
   };
 
-  create = async (saleData: ISale) => {
-    const query = `INSERT INTO Store.sales_products (sale_id, product_id, quantity, total)
-    VALUES (?, ?, ?, ?);`;
-    const { id, productId, quantity, total } = saleData;
+  create = async (id:number, productId: number, quantity: number) => {
+    const query = `INSERT INTO Store.sales_products (sale_id, product_id, quantity)
+    VALUES (?, ?, ?);`;
   
-   const [createResult] = await connection.execute<ResultSetHeader>(query, [ id, productId, quantity, total]);
+   const [createResult] = await connection.execute<ResultSetHeader>(query, [ id, productId, quantity]);
    return createResult;
     
   };

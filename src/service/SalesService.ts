@@ -20,21 +20,25 @@ export default class ProductService {
   saleById = async (id: number): Promise<ISale> => {
     const sale = await this.salesModel.saleById(id);
     return sale;
-  }
+  };
 
-  create = async (sales: ISale) => {
+  create = async (salesBody: ISale) => {
     const { insertId } = await this.salesModel.insertSalesDate();
-    const product = await this.productModel.findById(sales.productId);
-    const totalPrice = ((sales.quantity) * (product.sale_price)).toFixed(2);
-
-
+    const { productId, quantity } = salesBody;
+    const { sale_price } = await this.productModel.findById(productId);
+  
+    await this.salesModel.create(insertId, productId, quantity);
+  
     return {
-      Id: insertId,
-      productId: sales.productId,
-      quantity: sales.quantity,
-      total: totalPrice,
-    }
-  }
+      id: insertId,
+      itemSold: {
+        productId,
+        quantity,
+        price: sale_price,
+        total: (sale_price * quantity).toFixed(2),
+      },
+    };
+  };
 
   delete = async (id: number) => {
     const saleIdExists = await this.salesModel.saleById(id);
