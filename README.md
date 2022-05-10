@@ -1,4 +1,4 @@
-# Seja bem vindo ao repositório do projeto Store!
+# Seja bem vindo(a) ao repositório do projeto Store!
 
 ## Objetivo
 
