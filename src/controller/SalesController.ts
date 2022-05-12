@@ -27,6 +27,10 @@ export default class SalesController {
 
     const createdSale= await this.salesService.create(sale);
 
+    if (!createdSale) {
+      res.status(400).json({ message: 'Sale not created' });
+    }
+
     res.status(201).json(createdSale);
   }
 
