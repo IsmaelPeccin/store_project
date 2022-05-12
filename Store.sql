@@ -88,6 +88,20 @@ BEGIN
     UPDATE Store.products SET quantity = quantity + NEW.quantity WHERE id = NEW.product_id;
 END$
 
+CREATE TRIGGER Tgr_itens_vendas_delete AFTER DELETE
+ON Store.sales_products
+FOR EACH ROW
+BEGIN
+    UPDATE Store.products SET quantity = quantity + OLD.quantity WHERE id = OLD.product_id;
+END$
+
+CREATE TRIGGER Tgr_itens_compras_delete AFTER DELETE
+ON Store.purchases_products
+FOR EACH ROW
+BEGIN
+    UPDATE Store.products SET quantity = quantity - OLD.quantity WHERE id = OLD.product_id;
+END$
+
 DELIMITER ;
 
 
