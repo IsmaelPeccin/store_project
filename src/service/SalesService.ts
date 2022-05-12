@@ -25,9 +25,11 @@ export default class ProductService {
   create = async (salesBody: ISale) => {
     const { insertId } = await this.salesModel.insertSalesDate();
     const { productId, quantity } = salesBody;
-    const { sale_price } = await this.productModel.findById(productId);
-    const total = sale_price * quantity;
-  
+    const product = await this.productModel.findById(productId);
+    const total = product.sale_price * quantity;
+
+    if (product.quantity < quantity ) return false;
+    
     await this.salesModel.create(insertId, productId, quantity, total);
   
     return {
@@ -35,8 +37,8 @@ export default class ProductService {
       itemSold: {
         productId,
         quantity,
-        price: sale_price,
-        total: (sale_price * quantity).toFixed(2),
+        price: product.sale_price,
+        total: (product.sale_price * quantity).toFixed(2),
       },
     };
   };
