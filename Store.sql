@@ -72,5 +72,22 @@ INSERT INTO Store.sales_products (sale_id, product_id, quantity, total) VALUES
 INSERT INTO Store.purchases_products (purchase_id, product_id, quantity, total) VALUES
     (1, 1, 5, 125.00);
     
+DELIMITER $
+
+CREATE TRIGGER Tgr_itens_vendas_insert AFTER INSERT
+ON Store.sales_products
+FOR EACH ROW
+BEGIN
+    UPDATE Store.products SET quantity = quantity - NEW.quantity WHERE id = NEW.product_id;
+END$
+
+CREATE TRIGGER Tgr_itens_compras_insert AFTER INSERT
+ON Store.purchases_products
+FOR EACH ROW
+BEGIN
+    UPDATE Store.products SET quantity = quantity + NEW.quantity WHERE id = NEW.product_id;
+END$
+
+DELIMITER ;
 
 
